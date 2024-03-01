@@ -43,6 +43,7 @@
 #include <sys/vfs.h>
 #include <sys/uio.h>
 #include <sys/epoll.h>
+#include <sys/mount.h>
 #include <sys/sysinfo.h>
 #include <sys/sendfile.h>
 #include <sys/prctl.h>
@@ -810,6 +811,7 @@ TRACEPOINT(trace_syscall_getrlimit, "%d <= %d %p", int, int, struct rlimit *);
 TRACEPOINT(trace_syscall_getpriority, "%d <= %d %d", int, int, int);
 TRACEPOINT(trace_syscall_setpriority, "%d <= %d %d %d", int, int, int, int);
 TRACEPOINT(trace_syscall_ppoll, "%d <= %p %ld %p %p", int, struct pollfd *, nfds_t, const struct timespec *, const sigset_t *);
+TRACEPOINT(trace_syscall_mount, "%d <= %s %s %s 0x%x %p", int, const char *, const char *, const char *, int, const void *);
 
 OSV_LIBC_API long syscall(long number, ...)
 {
@@ -973,6 +975,7 @@ OSV_LIBC_API long syscall(long number, ...)
     SYSCALL2(getpriority, int, int);
     SYSCALL3(setpriority, int, int, int);
     SYSCALL4(ppoll, struct pollfd *, nfds_t, const struct timespec *, const sigset_t *);
+    SYSCALL5(mount, const char *, const char *, const char *, int, const void *);
     }
 
     debug_always("syscall(): unimplemented system call %d\n", number);
